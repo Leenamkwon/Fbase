@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Routes from './routes';
+
+// FIREBASE SETUP
 import firebase from './utils/firebase';
 
 ReactDOM.render(

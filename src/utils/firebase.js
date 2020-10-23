@@ -21,12 +21,5 @@ firebase.analytics();
 firebase.auth();
 
 const db = firebase.firestore();
-// 시간 구하기
-export const firebaseTimestamp = firebase.firestore.FieldValue.serverTimestamp;
-export const carsCollection = db.collection('cars');
-export const employeeRef = db
-  .collection('site')
-  .doc('employees')
-  .collection('admins');
 
 export default firebase;
