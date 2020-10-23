@@ -40,7 +40,9 @@ const Form = () => {
   };
 
   const handleGetUserInfo = () => {
-    console.log(firebase.auth().currentUser);
+    let getUser = firebase.auth().currentUser;
+    if (getUser) {
+    }
   };
 
   return (
