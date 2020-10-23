@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import firebase from '../../utils/firebase';
 
 const Form = () => {
   const [register, setRegister] = useState(true);
@@ -6,9 +7,41 @@ const Form = () => {
 
   const handleForm = (e) => {
     e.preventDefault();
+    const { email, password } = user;
+
+    if (register) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    } else {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
   };
 
-  const handleChange = (e) => {};
+  const handleChange = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    setUser({ ...user, [name]: value });
+  };
+
+  const handleLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log('used logged out');
+      });
+  };
+
+  const handleGetUserInfo = () => {
+    console.log(firebase.auth().currentUser);
+  };
 
   return (
     <>
@@ -29,7 +62,7 @@ const Form = () => {
           <input
             type='password'
             className='form-control'
-            name='passowrd'
+            name='password'
             value={user.password}
             onChange={handleChange}
           />
@@ -39,6 +72,10 @@ const Form = () => {
           {register ? 'Register' : 'sign in'}
         </button>
       </form>
+      <hr />
+      <button onClick={handleLogout}>logout</button>
+      <hr />
+      <button onClick={handleGetUserInfo}>Ask about the user</button>
     </>
   );
 };
