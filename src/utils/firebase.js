@@ -21,6 +21,8 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 firebase.auth();
 
-const dataBase = firebase.firestore();
+export const dataBase = firebase.firestore();
+
+export const firebaseTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 export default firebase;
