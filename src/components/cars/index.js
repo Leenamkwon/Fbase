@@ -9,7 +9,6 @@ const Cars = () => {
   useEffect(() => {
     dataBase
       .collection('cars')
-      .where('color', '==', 'red')
       .get()
       .then((snapshot) => {
         const cars = firebaseLooper(snapshot);
@@ -49,4 +48,11 @@ const Cars = () => {
     </div>
   );
 };
+
+// dataBase.collection('cars').onSnapshot((QuerySnapshot) => {
+//   QuerySnapshot.docChanges().forEach((QueryDocumentSnapshot) => {
+//     console.log(QueryDocumentSnapshot);
+//   });
+// });
+
 export default Cars;
