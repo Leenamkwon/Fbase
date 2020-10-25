@@ -22,7 +22,7 @@ firebase.analytics();
 firebase.auth();
 
 export const dataBase = firebase.firestore();
-
+export const userCollection = dataBase.collection('users');
 export const firebaseTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 export default firebase;

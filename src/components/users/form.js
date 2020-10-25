@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import firebase from '../../utils/firebase';
+import firebase, { userCollection } from '../../utils/firebase';
 
 const Form = () => {
-  const [register, setRegister] = useState(true);
+  const [register, setRegister] = useState(false);
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -17,7 +17,10 @@ const Form = () => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
-          console.log(response);
+          handleStoreRegisterUser(response);
+          response.user.sendEmailVerification().then(() => {
+            console.log('mail sent');
+          });
         });
     } else {
       firebase
@@ -29,6 +32,15 @@ const Form = () => {
     }
 
     setRegister(false);
+  }
+
+  function handleStoreRegisterUser(data) {
+    userCollection
+      .doc(data.user.uid)
+      .set({
+        email: data.user.email,
+      })
+      .then((data) => console.log(data));
   }
 
   function handleChange(e) {
@@ -51,7 +63,9 @@ const Form = () => {
     let getUser = firebase.auth().currentUser;
 
     if (getUser) {
-      console.log(getUser);
+      getUser.getIdTokenResult().then((res) => {
+        console.log(res);
+      });
     } else {
       console.log('no user');
     }
@@ -59,13 +73,45 @@ const Form = () => {
 
   function handleUpdateEmail() {
     let getUser = firebase.auth().currentUser;
-    let credential = firebase.auth.EmailAuthProvider.credential('');
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      'namkwon12@gmail.com',
+      'Stiis7812@'
+    ); // 사용자 인증
 
     if (getUser) {
-      getUser.updateEmail('hello@gmail.com').then((res) => {
-        console.log(res);
+      // 사용자 인증이 맞다면 이메일 업데이트 확인
+      getUser.reauthenticateWithCredential(credential).then((res) => {
+        getUser.updateEmail('namkwon@gmail.com');
       });
     }
+  }
+
+  function handleUpdateProfile() {
+    let getUser = firebase.auth().currentUser;
+
+    getUser
+      .updateProfile({
+        displayName: 'namkwon',
+        photoURL: 'https://photo.jpeg',
+      })
+      .then(() => {
+        console.log(getUser);
+      });
+  }
+
+  function handleGoogleSignIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        handleStoreRegisterUser(result);
+        // This gives you a Google Access Token.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+      });
   }
 
   return (
@@ -116,6 +162,16 @@ const Form = () => {
       <hr />
       <button className='btn btn-primary' onClick={handleUpdateEmail}>
         update user email
+      </button>
+
+      <hr />
+      <button className='btn btn-primary' onClick={handleUpdateProfile}>
+        update profile
+      </button>
+
+      <hr />
+      <button className='btn btn-primary' onClick={handleGoogleSignIn}>
+        Google signin
       </button>
     </>
   );
