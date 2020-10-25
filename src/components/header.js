@@ -30,6 +30,11 @@ const Header = () => {
                 login
               </Link>
             </li>
+            <li className='nav-item'>
+              <Link className='nav-link' to='/upload'>
+                upload
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
