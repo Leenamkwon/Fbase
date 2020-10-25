@@ -25,6 +25,7 @@ firebase.auth();
 // storage
 export const storage = firebase.storage();
 export const storageRef = storage.ref();
+export const userRef = storageRef.child('/images/users/');
 
 // db
 export const dataBase = firebase.firestore();

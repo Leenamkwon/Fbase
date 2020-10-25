@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { storageRef } from '../../utils/firebase';
+import { userRef } from '../../utils/firebase';
 
 const Upload = () => {
   const [store, setSotre] = useState({
@@ -10,12 +10,21 @@ const Upload = () => {
 
   function handleUpload(e) {
     e.preventDefault();
+    const { image } = store;
+    const uploadTask = userRef.child(`${image.name}`).put(image);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {},
+      (error) => {},
+      (complete) => {}
+    );
   }
 
   function handleChange(e) {
     if (e.target.files[0]) {
       const image = e.target.files[0];
-      this.setState({
+      setSotre({
         ...store,
         image,
       });
