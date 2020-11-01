@@ -7,6 +7,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import Cars from './components/cars';
 import Login from './components/user/Login';
+import Upload from './components/upload/Upload';
 
 const Routes = () => (
   <BrowserRouter>
@@ -16,6 +17,7 @@ const Routes = () => (
         <Route exact path='/' component={Home} />
         <Route exact path='/cars' component={Cars} />
         <Route exact path='/login' component={Login} />
+        <Route exact path='/upload' component={Upload} />
       </Switch>
     </main>
     <Footer />

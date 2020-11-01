@@ -22,10 +22,22 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 firebase.auth();
 
+// storage
+export const storage = firebase.storage();
+export const storageRef = storage.ref();
+export const usersRef = storageRef.child('/images/users/');
+
+// firestore
 export const db = firebase.firestore();
 export const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 export const carsCollection = db.collection('cars');
 
+export const employeeRef = db
+  .collection('site')
+  .doc('employees')
+  .collection('admin');
+
+// auth
 export const usersCollection = db.collection('users');
 
 export default firebase;
