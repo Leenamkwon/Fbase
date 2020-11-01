@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import firebase from '../../utils/firebase';
+import firebase, { usersCollection } from '../../utils/firebase';
 
 function UserForm() {
   const [register, setRegister] = useState(true);
@@ -15,8 +15,9 @@ function UserForm() {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((response) => {
-          response.user.sendEmailVerification();
+        .then((userCrential) => {
+          handleStoreRegisterUser(userCrential);
+          userCrential.user.sendEmailVerification();
           setIsUser((prev) => {
             return { ...prev, email: '', password: '' };
           });
@@ -84,9 +85,18 @@ function UserForm() {
     firebase
       .auth()
       .signInWithPopup(provider)
-      .then((result) => {
-        console.log(result);
+      .then((userCrential) => {
+        handleStoreRegisterUser(userCrential);
+        console.log(userCrential);
       })
+      .catch((err) => console.log(err));
+  }
+
+  function handleStoreRegisterUser(userCrential) {
+    usersCollection
+      .doc(userCrential.user.uid)
+      .set({ email: userCrential.user.email })
+      .then((data) => console.log(data))
       .catch((err) => console.log(err));
   }
 
