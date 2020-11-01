@@ -55,4 +55,10 @@ function Cars() {
   );
 }
 
+// carsCollection.onSnapshot((querySnapshot) => {
+//   querySnapshot.docChanges().forEach((change) => {
+//     console.log(change.doc.data());
+//   });
+// });
+
 export default Cars;

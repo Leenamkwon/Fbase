@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
-import { carsCollection, timestamp } from '../../utils/firebase';
+import React, { useEffect, useState } from 'react';
+import firebase, { carsCollection, timestamp } from '../../utils/firebase';
 
 const initialData = { brand: '', color: '', price: 0, available: true };
 function Form() {
   const [formData, setFormData] = useState(initialData);
 
+  useEffect(() => {
+    carsCollection.doc('Ng3mshKq69gJxjDuinJf').update({
+      // nested object update
+      'dealers.age': 15,
+      // nested array pushed
+      tag: firebase.firestore.FieldValue.arrayUnion('4'),
+      color: 'black',
+    });
+  }, []);
+
   function handleFormSubmit(e) {
     e.preventDefault();
     carsCollection
-      .add({
+      .doc()
+      .set({
         ...formData,
         price: parseInt(formData.price),
-        timeStamp: timestamp,
+        createdAt: timestamp,
+        dealers: {
+          age: 20,
+          location: 'NY',
+          careear: '9 years',
+        },
+        tag: ['1', '2', '3'],
       })
       .then((data) => console.log(data));
   }
@@ -20,8 +37,6 @@ function Form() {
     setFormData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-
-    console.log(formData);
   }
 
   return (
