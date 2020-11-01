@@ -22,14 +22,8 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 firebase.auth();
 
-// storage
-export const storage = firebase.storage();
-export const storageRef = storage.ref();
-export const userRef = storageRef.child('/images/users/');
-
-// db
-export const dataBase = firebase.firestore();
-export const userCollection = dataBase.collection('users');
-export const firebaseTimestamp = firebase.firestore.FieldValue.serverTimestamp();
+export const db = firebase.firestore();
+export const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+export const carsCollection = db.collection('cars');
 
 export default firebase;

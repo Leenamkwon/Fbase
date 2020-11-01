@@ -1,39 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import Forms from './Forms';
-import { dataBase } from '../../utils/firebase';
+import { carsCollection } from '../../utils/firebase';
 import { firebaseLooper } from '../../utils/tools';
+import Form from './Form';
 
-const Cars = () => {
-  const [car, setCar] = useState([]);
+function Cars() {
+  const [cars, setCars] = useState([]);
+
+  // collection => firebase.fireStore().collection(collectionName)
+  // document => firebase.fireStore().doc(path)
 
   useEffect(() => {
-    dataBase
-      .collection('cars')
+    carsCollection
       .get()
       .then((snapshot) => {
-        const cars = firebaseLooper(snapshot);
-        setCar(cars);
+        const data = firebaseLooper(snapshot);
+        setCars(data);
       })
       .catch((err) => console.log(err));
+
+    // carsCollection
+    //   .where('color', '==', 'red')
+    //   .get()
+    //   .then((snapshot) => snapshot.forEach((doc) => console.log(doc.data())));
   }, []);
 
-  const handleCarData = () => {
-    return (
-      car &&
-      car.map((item, i) => (
+  function handleCarData(cars) {
+    return cars?.map((data, i) => {
+      return (
         <tr key={i}>
-          <th>{item.id}</th>
-          <th>{item.brand}</th>
-          <th>{item.color}</th>
-          <th>{item.price}</th>
+          <th>{data.id}</th>
+          <th>{data.brand}</th>
+          <th>{data.color}</th>
+          <th>{data.price}</th>
         </tr>
-      ))
-    );
-  };
+      );
+    });
+  }
 
   return (
-    <div>
-      <Forms />
+    <>
+      <Form />
       <table className='table table-dark'>
         <thead>
           <tr>
@@ -43,16 +49,10 @@ const Cars = () => {
             <th>Price</th>
           </tr>
         </thead>
-        <tbody>{handleCarData()}</tbody>
+        <tbody>{handleCarData(cars)}</tbody>
       </table>
-    </div>
+    </>
   );
-};
-
-// dataBase.collection('cars').onSnapshot((QuerySnapshot) => {
-//   QuerySnapshot.docChanges().forEach((QueryDocumentSnapshot) => {
-//     console.log(QueryDocumentSnapshot);
-//   });
-// });
+}
 
 export default Cars;
