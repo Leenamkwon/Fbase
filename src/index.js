@@ -12,7 +12,7 @@ ReactDOM.render(
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    console.log('user signed');
+    console.log(user.email, 'user signed');
   } else {
     console.log('not user');
   }
