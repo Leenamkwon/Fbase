@@ -11,6 +11,10 @@ function Upload() {
   const resumeRef = useRef();
   const cancelRef = useRef();
 
+  useEffect(() => {
+    // usersRef.child('/product-2.png').getDownloadURL((url) => console.log(url));
+  }, []);
+
   function handleChange(e) {
     if (e.target.files[0]) {
       const image = e.target.files[0];
@@ -23,7 +27,9 @@ function Upload() {
   function handleUpload(e) {
     e.preventDefault();
     const { image } = imageData;
-    const uploadTask = usersRef.child(image.name).put(image);
+    const uploadTask = usersRef
+      .child(image.name)
+      .put(image, { customMetadata: { hello: 'hi' } });
 
     uploadTask.on(
       'state_change',
@@ -38,6 +44,11 @@ function Upload() {
       },
       () => {
         console.log('complete');
+        console.log(uploadTask.snapshot.ref.fullPath);
+
+        uploadTask.snapshot.ref
+          .getDownloadURL()
+          .then((url) => console.log(url));
       }
     );
   }
