@@ -87,7 +87,6 @@ function UserForm() {
       .signInWithPopup(provider)
       .then((userCrential) => {
         handleStoreRegisterUser(userCrential);
-        console.log(userCrential);
       })
       .catch((err) => console.log(err));
   }
@@ -124,11 +123,12 @@ function UserForm() {
             value={user.password}
           />
         </div>
+
         <button className='btn btn-primary' type='submit'>
           {register ? 'register' : 'login'}
         </button>
 
-        {isUser && (
+        {firebase.auth().currentUser && (
           <>
             <hr />
             <button className='btn btn-primary' onClick={handleLogout}>
@@ -144,7 +144,7 @@ function UserForm() {
         <hr />
         <button onClick={() => handleUpdateProfile}>Update Profile</button>
         <hr />
-        <button onClick={() => handleGoogleSignin()}>Update Profile</button>
+        <button onClick={() => handleGoogleSignin()}>Google Signin</button>
       </form>
     </>
   );

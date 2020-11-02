@@ -37,7 +37,6 @@ export const employeeRef = db
   .doc('employees')
   .collection('admin');
 
-// auth
 export const usersCollection = db.collection('users');
 
 export default firebase;
